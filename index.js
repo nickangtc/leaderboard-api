@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 var SCORES = [
   {
     id: 1,
-    name: 'Eugene Ooi',
+    name: 'Eugene Oei',
     score: 99
   },
   {
@@ -54,21 +54,40 @@ app.get('/entries', function (req, res) {
 
 // READ score of one entry
 app.get('/entries/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  var result = {};
-
-  for (var i = 0; i < SCORES.length; i++) {
-    if (SCORES[i].id === id) {
-      result = SCORES[i];
-    }
-  }
+  var id = req.params.id;
+  var result = getEntry(id);
   res.json(result);
 });
 
 // UPDATE - edit form, pre-populated with data
 app.get('/entries/:id/edit', function (req, res) {
-  res.render('entry_edit', {id: req.params.id})
+  var id = parseInt(req.params.id); // must parseInt!
+  var result = getEntry(id);
+  res.render('entry_edit', {data: result});
 });
+
+// UPDATE - accept info from form, show updated entry
+app.put('/entries/:id', function (req, res) {
+  var id = req.params.id;
+  for (var i = 0; i < SCORES.length; i++) {
+    if (SCORES[i].id === parseInt(id)) {
+      SCORES[i].name = req.body.name;
+      SCORES[i].score = req.body.score;
+    }
+  }
+
+
+});
+
+function getEntry (id) {
+  var result = {};
+  for (var i = 0; i < SCORES.length; i++) {
+    if (SCORES[i].id === parseInt(id)) {
+      result = SCORES[i];
+    }
+  }
+  return result;
+}
 
 console.log('You\'re surfing the big waves of http://localhost:3000');
 app.listen(3000);
