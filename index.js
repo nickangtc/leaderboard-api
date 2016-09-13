@@ -1,8 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var cors = require('cors');
 
 var app = express();
+
+app.use(cors());
 
 // configure app to use ejs as view engine
 app.set('view engine', 'ejs');
@@ -26,11 +29,12 @@ var SCORES = [
   }
 ];
 
-// CREATE new entry
+// CREATE - new entry form
 app.get('/entries/new', function (req, res) {
   res.render('entry_new');
 });
 
+// CREATE - show new entry
 app.post('/entries', function (req, res) {
   var newId = SCORES.length + 1;
   var newEntry = {
@@ -59,6 +63,11 @@ app.get('/entries/:id', function (req, res) {
     }
   }
   res.json(result);
+});
+
+// UPDATE - edit form, pre-populated with data
+app.get('/entries/:id/edit', function (req, res) {
+  res.render('entry_edit', {id: req.params.id})
 });
 
 console.log('You\'re surfing the big waves of http://localhost:3000');
