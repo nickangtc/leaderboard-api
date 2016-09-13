@@ -10,6 +10,9 @@ app.use(cors());
 // configure app to use ejs as view engine
 app.set('view engine', 'ejs');
 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'));
+
 // configure body-parser
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -75,7 +78,7 @@ app.put('/entries/:id', function (req, res) {
       SCORES[i].score = req.body.score;
     }
   }
-
+  res.redirect('/entries');
 
 });
 
