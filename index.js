@@ -79,7 +79,6 @@ app.put('/entries/:id', function (req, res) {
     }
   }
   res.redirect('/entries');
-
 });
 
 function getEntry (id) {
